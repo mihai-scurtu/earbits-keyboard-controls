@@ -4,4 +4,4 @@ Basic controls:
 
 - **Space** - Play / Pause
 - **Ctrl + arrows** - Prev / Next track
-- **f** - toggle 'fullscreen' (not actual fullscreen, just the pretty Earbits *Now Playing* screen)
+- **F** - toggle 'fullscreen' (not actual fullscreen, just the pretty Earbits *Now Playing* screen)
