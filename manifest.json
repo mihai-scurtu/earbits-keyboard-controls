@@ -1,0 +1,16 @@
+{
+	"name": "Earbits Keyboard Controls",
+	"version": "0.1",
+	"description": "Adds basic keyboard controls to Earbits radio",
+
+	"permissions": [
+		"http://www.earbits.com/*"
+	],
+
+	"content_scripts": [{
+		"matches": ["http://www.earbits.com/*"],
+		"js": ["jquery.js", "controls.js"]
+	}],
+
+	"manifest_version": 2
+}
