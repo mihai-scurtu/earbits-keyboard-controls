@@ -9,7 +9,7 @@
 
 	"content_scripts": [{
 		"matches": ["http://www.earbits.com/*"],
-		"js": ["jquery.js", "jquery.mousewheel.js", "controls.js"]
+		"js": ["jquery.js", "jquery.mousewheel.js", "jquery-ui-1.10.4.custom.min.js", "controls.js"]
 	}],
 
 	"manifest_version": 2
