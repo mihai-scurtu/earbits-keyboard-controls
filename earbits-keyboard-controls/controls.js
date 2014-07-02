@@ -5,26 +5,36 @@ var options = {
 		RIGHT: 39,
 		F: 70
 	},
-	volumeIncrement: 5
+	volumeIncrement: 5,
 } 
 
 function noInputFocus() {
 	return !($('input[type=text]:focus, input[type=password]:focus').size());
 }
 
-function setVolume(value, slider) {
-	var volSlider = /*slider ? slider : */$('.volume-slider');
+function setVolume(value) {
+  // Sanitize parameter, to make sure it doesn't need any escaping
+  value = parseInt(value, 10);
+  console.log(value);
 
-	volSlider.slider('value', value);
-	volSlider.slider('option', 'slide')(null, {value: volSlider.slider('value')});
+  var script = document.createElement("script");
+  script.async = false;
+  script.textContent = "(function() {" +
+      "var _volume = " + value + ";" +
+      "var volSlider = $('.volume-slider');" +
+      "volSlider.slider('value', _volume);" +
+      "volSlider.slider('option', 'slide')(null, {value: volSlider.slider('value')});" +
+    "})()";
+  document.documentElement.appendChild(script);
+  document.documentElement.removeChild(script);
 }
 
-function adjustVolume(delta, slider) {
-	var volSlider = /*slider ? slider : */$('.volume-slider');
-	console.log(volSlider.slider('value'));
-	var value = Math.min(Math.max(volSlider.slider('value') + delta, 0), 100);;
+function adjustVolume(delta) {
+	var volSlider = $('.volume-slider');
+	console.log(Math.min(Math.max(parseInt(volSlider.find('.ui-slider-handle').css('bottom')) + delta, 0), 100));
+	var value = Math.min(Math.max(parseInt(volSlider.find('.ui-slider-handle').css('bottom')) + delta, 0), 100);
 
-	setVolume(value, volSlider);
+	setVolume(value);
 }
 
 $(window).load(function() {
@@ -49,21 +59,13 @@ $(window).load(function() {
 		}
 	});
 
-	var bindVolumeInterval = setInterval(function() {
-		if(typeof $('.volume-slider').slider != 'undefined') {
-			$('#menu, #audio-controls').on('mousewheel', function(e) {
-				e.preventDefault();
-				// console.log(e);
-				if(parseInt(e.deltaY) > 0) {
-					adjustVolume(options.volumeIncrement);
-				} else {
-					adjustVolume(-options.volumeIncrement);
-				}
-			});
-			clearInterval(bindVolumeInterval);
-			console.log('volume-bind ok');
+	// bind mouse wheel
+	$('#menu, #audio-controls').on('mousewheel', function(e) {
+		e.preventDefault();
+		if(parseInt(e.deltaY) > 0) {
+			adjustVolume(options.volumeIncrement);
 		} else {
-			console.log('volume-bind fail');
+			adjustVolume(-options.volumeIncrement);
 		}
-	}, 1000);
+	});
 });
